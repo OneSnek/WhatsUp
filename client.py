@@ -87,7 +87,7 @@ class Client:
         # reponse = decrypt(enc_r) ...
 
         #response = enc_r # TODO : delete me (Transmis en clair ici)
-        response = RSA_decrypt(data, kpriv)
+        AES_decrypt(enc_r, key, iv)
 
         return json.loads(response) # La réponse en clair est du JSON, décodé ici en dict
 

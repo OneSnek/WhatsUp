@@ -73,8 +73,9 @@ class Server(BaseHTTPRequestHandler):
         # TODO : chiffrer la réponse
         # encrypted_json = crypt(json_response) ...
 
-        encrypted_json = json_response # TODO delete me (En clair ici aussi donc)
-        
+        #encrypted_json = json_response # TODO delete me (En clair ici aussi donc)
+        encrypted_json = AES_encrypt(enc, enckey, encIV)
+
         json_response = json.dumps(encrypted_json)
 
         self.send_response(200)
