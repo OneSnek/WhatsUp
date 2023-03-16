@@ -82,12 +82,15 @@ class Client:
         r = requests.post(SERVER_URL, data=json.dumps(r_post), proxies=PROXY)
     
         enc_r = r.text
+        r_rep = json.loads(enc_r)
+        niv = base64.b64decode(r_rep["NIV"])
+        encrep = base64.b64decode(r_rep["encrep"])
 
         # FIXME : dechiffrer la réponse
         # reponse = decrypt(enc_r) ...
 
         #response = enc_r # TODO : delete me (Transmis en clair ici)
-        AES_decrypt(enc_r, key, iv)
+        response = AES_decrypt(encrep, key, niv)
 
         return json.loads(response) # La réponse en clair est du JSON, décodé ici en dict
 
