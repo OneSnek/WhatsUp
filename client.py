@@ -60,7 +60,6 @@ class Client:
         global SERVER_URL
 
         request_data = json.dumps(params) # transforme le paramètre en JSON (string)
-
         r_post = {}
 
         # FIXME : chiffrer la requête ...
@@ -68,7 +67,11 @@ class Client:
         # r_post["IV"] = b64(....)
         # r_post["encdata"] = b64(encrypt(request_data)) # On va chiffrer le JSON
 
-        r_post["encdata"] = request_data # TODO : delete me (Transmis en clair ici)
+        """r_post["encdata"] = request_data # TODO : delete me (Transmis en clair ici)"""
+        cle = RSA_gen_key() #(publique, privée)
+        kpub = cle[0]
+        kpriv = cle[1]
+        r_post["encdata"] = RSA_encrypt(request_data, kpub) # RSA(message,Kpub) meant for server
 
         r = requests.post(SERVER_URL, data=json.dumps(r_post), proxies=PROXY)
     
@@ -77,7 +80,8 @@ class Client:
         # FIXME : dechiffrer la réponse
         # reponse = decrypt(enc_r) ...
 
-        response = enc_r # TODO : delete me (Transmis en clair ici)
+        """response = enc_r # TODO : delete me (Transmis en clair ici)"""
+        response = RSA_decrypt(data, kpriv)
 
         return json.loads(response) # La réponse en clair est du JSON, décodé ici en dict
 

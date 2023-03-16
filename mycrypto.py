@@ -1,7 +1,7 @@
 import os
 
 ### HASH
-
+#import cryptography
 import hashlib
 
 def hash(data:bytes):
