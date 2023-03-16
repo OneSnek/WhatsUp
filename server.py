@@ -60,7 +60,10 @@ class Server(BaseHTTPRequestHandler):
         # encIV = json_POST["IV"]
         # data = b64(decrypt(json_POST["encdata"])) ...
 
-        data = json_POST["encdata"] # TODO : delete me (Transmis en clair ici)
+        #data = json_POST["encdata"] # TODO : delete me (Transmis en clair ici)
+        enckey = base64.b64decode(json_POST["enckey"])
+        encIV = base64.b64decode(json_POST["IV"])
+        data = base64.b64decode(AES_decrypt(json_POST["encdata"]))
 
         decrypted_request = json.loads(data) # Converti le JSON déchiffré en dict python
 

@@ -86,7 +86,7 @@ class Client:
         # FIXME : dechiffrer la réponse
         # reponse = decrypt(enc_r) ...
 
-        """response = enc_r # TODO : delete me (Transmis en clair ici)"""
+        #response = enc_r # TODO : delete me (Transmis en clair ici)
         response = RSA_decrypt(data, kpriv)
 
         return json.loads(response) # La réponse en clair est du JSON, décodé ici en dict
