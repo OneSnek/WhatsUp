@@ -60,6 +60,8 @@ class Client:
         global SERVER_URL
 
         request_data = json.dumps(params) # transforme le paramètre en JSON (string)
+
+
         r_post = {}
 
         # FIXME : chiffrer la requête ...
@@ -67,11 +69,15 @@ class Client:
         # r_post["IV"] = b64(....)
         # r_post["encdata"] = b64(encrypt(request_data)) # On va chiffrer le JSON
 
-        """r_post["encdata"] = request_data # TODO : delete me (Transmis en clair ici)"""
-        cle = RSA_gen_key() #(publique, privée)
-        kpub = cle[0]
-        kpriv = cle[1]
-        r_post["encdata"] = RSA_encrypt(request_data, kpub) # RSA(message,Kpub) meant for server
+        #r_post["encdata"] = request_data # TODO : delete me (Transmis en clair ici)
+        key = AES_gen_key()
+        iv = AES_gen_IV()
+        encryptm = AES_encrypt(request_data.encode(), key, iv)
+        enkey = RSA_encrypt(key, K_S_pub)
+
+        r_post["enckey"] = base64.b64encode(enkey).decode()
+        r_post["IV"] = base64.b64encode(iv).decode()
+        r_post["encdata"] = base64.b64encode(encryptm).decode()
 
         r = requests.post(SERVER_URL, data=json.dumps(r_post), proxies=PROXY)
     
